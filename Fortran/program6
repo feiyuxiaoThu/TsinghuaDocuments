@@ -1,0 +1,86 @@
+subroutine ifs(figx,figy)
+    
+     !DEC$ ATTRIBUTES C, DLLEXPORT::ifs
+  !DEC$ ATTRIBUTES  REFERENCE::figx,figy
+
+	integer,parameter:: pre=30000
+
+	real:: r(pre)
+
+	integer i
+	real(8) w1,w2,w3,w4
+	real(8) ww1,ww2,ww3,ww4
+	real(8) a(4),b(4),c(4),d(4),e(4),f(4)
+	real(8):: p(4)
+	real(8) :: m,n
+
+	real(8):: figx(pre),figy(pre)
+	real(8):: x,y
+	!暂时储存
+	real(8):: xx,yy
+
+
+	w1(m,n)=a(1)*m+b(1)*n+e(1)
+	ww1(m,n)=c(1)*m+d(1)*n+f(1)
+	
+	w2(m,n)=a(2)*m+b(2)*n+e(2)
+	ww2(m,n)=c(2)*m+d(2)*n+f(2)
+
+	w3(m,n)=a(3)*m+b(3)*n+e(3)
+	ww3(m,n)=c(3)*m+d(3)*n+f(3)
+
+	w4(m,n)=a(4)*m+b(4)*n+e(4)
+	ww4(m,n)=c(4)*m+d(4)*n+f(4)
+
+	x=0
+	y=0
+
+
+
+	!赋初值
+	call random_seed()
+	do i=1,pre
+	call random_number(r(i))
+	end do
+
+	data a/0.6,0.6,0.4,0.4/
+	data b/0,0,0.3,-0.3/
+	data c/0,0,-0.3,0.3/
+	data d/0.6,0.6,0.4,0.4/
+    data e/0.18,0.18,0.27,0.27/
+	data f/0.36,0.12,0.36,0.09/
+	
+	p=0.25
+
+
+
+	do i=1,pre
+		if(r(i)<0.25) then
+		xx=w1(x,y)
+		yy=ww1(x,y)
+		else if(r(i)<0.50) then
+		xx=w2(x,y)
+		yy=ww2(x,y)
+		else if(r(i)<0.75) then
+		xx=w3(x,y)
+		yy=ww3(x,y)
+		else 
+		xx=w4(x,y)
+		yy=ww4(x,y)
+	
+		end if
+
+		x=xx
+		y=yy
+		figx(i)=xx
+		figy(i)=yy
+		
+	end do
+
+
+
+	end subroutine
+
+
+	
+

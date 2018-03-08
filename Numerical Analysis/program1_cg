@@ -1,0 +1,22 @@
+function x = CG(A,b)
+%CG 共轭梯度法解方程
+[~,n] = size(A);
+x(1:n) = 0;
+x = x';
+r = b - A*x;
+p = r;
+for i = 1:n;
+    if r == 0;
+        break
+    end
+    a = dot(r,r)/dot(p,A*p);
+    x = x + a*p;
+    r1 = r - a*A*p;
+    bt = dot(r1,r1)/dot(r,r);
+    p = r1 + bt*p;
+    r = r1;
+end
+
+
+end
+

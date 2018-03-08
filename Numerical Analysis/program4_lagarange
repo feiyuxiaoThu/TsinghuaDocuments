@@ -1,0 +1,37 @@
+function yy=notequallagrange(x1,y1,xx)
+%本程序为Lagrange1插值，其中x1,y1
+%为插值节点和节点上的函数值，输出为插值点xx的函数值，
+%xx可以是向量。
+syms x
+n=length(x1);
+for i=1:n
+t=x1;t(i)=[];L(i)=prod((x-t)./(x1(i)-t));% L向量用来存放插值基函数
+end 
+lx=0;
+for i=1:n
+    lx=lx+L(i);
+end
+u=sum(L.*y1);
+p=simplify(u); % p是简化后的Lagrange插值函数（字符串）
+yy=subs(p,x,xx);
+clf
+figure(1)
+y1=log(xx+2);
+y0=y1.*xx.^2;
+figure (1);
+plot(xx,y0,'b');
+hold on;
+plot(xx,yy,'c');
+title('插值余项极小化方法');
+legend('the original function','the approching function');
+
+yy1=log(xx+2);
+yyy=yy1.*xx.^2;
+figure (2);
+plot(xx,(yy-yyy).^2);
+title ('the error');
+
+%输出不等距拉格朗日插值多项式的系数
+pp=sym2poly(u);
+disp(pp);
+

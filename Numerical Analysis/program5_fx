@@ -1,0 +1,3 @@
+function fx=fx(x)
+fx=sin(2*pi/x)/x^2;
+end

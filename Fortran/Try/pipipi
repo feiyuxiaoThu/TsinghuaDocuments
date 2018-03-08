@@ -1,0 +1,62 @@
+program main
+
+implicit none
+
+integer,parameter:: n=10
+integer,parameter:: pointnum=200
+real:: a(n+1),b(n+1)
+integer i,j,k
+real answer(201),x(201)
+real fx
+real up,down
+
+!f(x)=1/(1+25*x**2)
+
+	do i=1,n+1
+		a(i)=-1+2*(i-1)/n
+		b(i)=1/(1+25*a(i)**2)
+	end do
+
+	do j=1,200
+	x(j)=-1+(j-1)*2/pointnum
+	end do 
+	
+	do i=1,n+1
+
+	
+
+	do j=1,200
+		fx=0
+
+		do k=1,n+1
+            up=1
+            down=1
+		
+		if (k==i) then
+		up=up*1
+		down=down*1
+		else
+		up=up*(x(j)-a(k))
+		down=down*(a(i)-a(k))
+		end if
+		
+		fx=b(a(k))*up/down+fx
+		end do
+
+		answer(j)=fx
+	end do
+
+	end do
+
+	open(10,file='x')
+	open(20,file='y')
+
+	read(10,*) x
+	read(20,*) answer
+
+end
+	
+		 
+			
+
+

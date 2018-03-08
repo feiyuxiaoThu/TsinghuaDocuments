@@ -1,2 +1,2 @@
-# TsinghuaDocuments
-My documents of several courses in Tsinghua
+# Tsinghua
+My documents in Tsinghua

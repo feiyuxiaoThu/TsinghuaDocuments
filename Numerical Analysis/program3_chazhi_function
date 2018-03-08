@@ -1,0 +1,32 @@
+function y = lagrange(x0,y0,x)
+%生成插值法的函数
+n=length(x0);
+m=length(x);
+y=1:m;
+yy=1:m;
+for w=1:m;
+    y(w)=0;
+    yy(w)=1;
+end
+for k=1:m;
+    for i=1:n;
+        yy(k)=1;
+        for j=1:n;
+         
+            if j~=i;
+            yy(k)=(yy(k)*(x(k)-x0(j)))/(x0(i)-x0(j));
+            end
+        end
+      y(k)=y(k)+y0(i)*yy(k);
+    end
+end
+
+
+end
+
+            
+            
+            
+            
+
+

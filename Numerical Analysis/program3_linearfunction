@@ -1,0 +1,31 @@
+function l=lineinter (x0,y0,x)
+n=length(x0);
+m=length(x);
+l=1:m;
+for w=1:m;
+    l(w)=0;
+end
+
+for k=1:m
+        if x(k)>=x0(n-1)
+            l(k)=y0(n)*(x(k)-x0(n-1))/(x0(n)-x0(n-1))+y0(n-1)*(x(k)-x0(n))/(x0(n-1)-x0(n));
+        else 
+            for i=2:n-1
+                if x(k)>=x0(i-1)&&x(k)<=x0(i)
+                l(k)=y0(i)*(x(k)-x0(i-1))/(x0(i)-x0(i-1))+y0(i-1)*(x(k)-x0(i))/(x0(i-1)-x0(i));
+                end 
+            end
+        end
+end
+
+        
+        
+                
+                
+        
+        
+        
+   
+    
+    
+    

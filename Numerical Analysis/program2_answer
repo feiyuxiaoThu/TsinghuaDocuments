@@ -1,0 +1,180 @@
+%给出矩阵
+
+n=2;
+W=zeros(n,n);
+for i=1:n;
+    for j=1:n;
+        W(i,j)=1/(i+j-1);
+    end
+end
+
+xo=ones(n,1);
+
+b=W*xo;
+
+disp('guass')
+
+H=W;
+
+for i=1:n
+    for j=i+1:n
+        l=H(j,i)/H(i,i);
+        H(j,:)=H(j,:)-l*H(i,i);
+        b(j)=b(j)-l*b(i);
+    end 
+end 
+x=zeros(n,1);
+x(n,1)=b(n)/H(n,n);
+ for i=n-1:-1:1;
+     sum=0;
+     for j=i+1:n;
+         sum=sum+H(i,j)*x(j);
+     end 
+     x(i,1)=(b(i)-sum)/H(i,i);
+ end
+ e1=norm((norm(x)-norm(xo)))/norm(xo);
+ 
+ 
+ 
+ disp('cholsky')
+ H=W;
+ C=chol(H);
+ H1=C';
+ 
+ %求解第一个方程
+ for i=1:n
+    for j=i+1:n
+        l=H1(j,i)/H1(i,i);
+        H1(j,:)=H1(j,:)-l*H1(i,i);
+        b(j)=b(j)-l*b(i);
+    end 
+end 
+x1=zeros(n,1);
+x1(n,1)=b(n)/H1(n,n);
+ for i=n-1:-1:1;
+     sum=0;
+     for j=i+1:n;
+         sum=sum+H1(i,j)*x1(j);
+     end 
+     x1(i,1)=(b(i)-sum)/H1(i,i);
+ end
+ 
+ %求解第二个方程
+ H2=C;
+ for i=1:n
+    for j=i+1:n
+        l=H2(j,i)/H2(i,i);
+        H2(j,:)=H2(j,:)-l*H2(i,i);
+        x1(j)=x1(j)-l*x1(i);
+    end 
+end 
+xx=zeros(n,1);
+xx(n,1)=x1(n)/H2(n,n);
+ for i=n-1:-1:1;
+     sum=0;
+     for j=i+1:n;
+         sum=sum+H2(i,j)*xx(j);
+     end 
+     xx(i,1)=(b(i)-sum)/H2(i,i);
+ end
+
+ e2=norm(norm(xx)-norm(xo))/norm(xo);
+ 
+ %求解条件数
+ cond2=cond(W,2);
+ 
+ %采用正则化方法改善结果
+ b1=W'*b;
+ a=10^-7;
+ I=eye(n);
+ H2=a*I+W'*W;
+ 
+ for i=1:n
+    for j=i+1:n
+        l=H2(j,i)/H2(i,i);
+        H2(j,:)=H2(j,:)-l*H2(i,i);
+        b1(j)=b1(j)-l*b1(i);
+    end 
+end 
+xxx=zeros(n,1);
+xxx(n,1)=b1(n)/H2(n,n);
+ for i=n-1:-1:1;
+     sum=0;
+     for j=i+1:n;
+         sum=sum+H2(i,j)*xxx(j);
+     end 
+     xxx(i,1)=(b1(i)-sum)/H2(i,i);
+ end
+ e3=norm(norm(xxx)-norm(xo))/norm(xo);
+ 
+ %SOR迭代
+ H3=W;
+ bs=b;
+ xs=zeros(n,1);
+ 
+ w=1.5;
+ for frequency=1:10
+     for i=1:n
+         sum1=0;
+        sum2=0;
+        if i>1
+            
+            for s=1:i-1
+                sum1=sum1+H3(i,s)*xs(s,1);
+            end
+        else
+            sum1=0;
+        end
+            
+        for t=i+1:n
+            sum2=sum2+H3(i,t)*xs(t,1);
+        end
+        
+        xs(i,1)=(1-w)*xs(i,1)+(w/H3(i,i))*(b(i)-sum1-sum2);
+        
+        e4=norm(norm(xs)-norm(xo))/norm(xo);
+     end
+ end
+
+ %共轭梯度法
+ z=zeros(n,1);
+ rr=b-W*z;
+ pp=rr;
+ for k=1,10;
+     if norm(rr)=0 & dot(pp,W*pp)=0
+             continue
+         
+     end
+     
+     aa=dot(rr,rr)/dot(pp,W*pp);
+     z=z+aa*pp;
+     rro=rr-aa*W*pp;
+     bb=dot(rro,rro)/dot(rr,rr);
+     pp=rro+bb*pp;
+     rr=rro;
+         
+     
+ end
+ e5=norm(norm(z)-norm(xo))/norm(xo);
+ 
+
+ 
+    	
+        
+            
+            
+        
+        
+     
+     
+     
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+
+

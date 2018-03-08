@@ -1,0 +1,10 @@
+function f=xex(x)
+a=1+x;
+t=a.^20;
+tt=exp(-2*x);
+f=t.*tt;
+end
+
+% format long
+%format compact
+%quad(@xex,0,1)

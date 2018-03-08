@@ -1,0 +1,97 @@
+subroutine ifs(figx,figy)
+    !dll配置
+    !DEC$ ATTRIBUTES C, DLLEXPORT::ifs
+    !DEC$ ATTRIBUTES  REFERENCE::figx,figy
+    !循环迭代次数
+	integer,parameter:: pre=20000
+    !随机变量
+	real:: r(pre)
+    
+	integer i
+    
+	real(8) w1,w2,w3,w4         !仿射变换
+	real(8) ww1,ww2,ww3,ww4     !仿射变换
+    !IFS码
+	real(8) a(4),b(4),c(4),d(4),e(4),f(4)
+    !概率区间
+	real(8):: p(4)
+    
+	real(8) :: m,n
+    !值点的坐标
+	real(8):: figx(pre),figy(pre)
+    !迭代变量
+	real(8):: x,y
+	!暂时储存
+	real(8):: xx,yy
+
+    !语句函数
+	w1(m,n)=a(1)*m+b(1)*n+e(1)
+	ww1(m,n)=c(1)*m+d(1)*n+f(1)
+	
+	w2(m,n)=a(2)*m+b(2)*n+e(2)
+	ww2(m,n)=c(2)*m+d(2)*n+f(2)
+
+	w3(m,n)=a(3)*m+b(3)*n+e(3)
+	ww3(m,n)=c(3)*m+d(3)*n+f(3)
+
+	w4(m,n)=a(4)*m+b(4)*n+e(4)
+	ww4(m,n)=c(4)*m+d(4)*n+f(4)
+
+	x=0
+	y=0
+
+
+
+	!赋初值
+    !生成随机变量
+	call random_seed()
+	do i=1,pre
+	call random_number(r(i))
+    end do
+    
+    !Tree所需要的特定的IFS值
+
+	data a/-0.04,0.65,0.41,0.52/
+	data b/0,0,0.46,-0.35/
+	data c/-0.19,0,-0.39,0.25/
+	data d/-0.47,0.56,0.61,0.74/
+    data e/-0.12,0.06,0.46,-0.48/
+	data f/0.3,1.56,0.4,0.38/
+    
+    !Tree所需要的特定概率区间分配
+	
+	p=0.25
+
+
+    !循环迭代
+    !在不同的概率区间执行不一样的对应的仿射变换
+	do i=1,pre
+		if(r(i)<0.25) then
+		    xx=w1(x,y)
+		    yy=ww1(x,y)
+		else if(r(i)<0.50) then
+		    xx=w2(x,y)
+		    yy=ww2(x,y)
+		else if(r(i)<0.75) then
+		    xx=w3(x,y)
+		    yy=ww3(x,y)
+		else 
+		    xx=w4(x,y)
+		    yy=ww4(x,y)
+	
+		end if
+
+		x=xx
+		y=yy
+		figx(i)=xx
+		figy(i)=yy
+		
+	end do
+
+
+
+	end subroutine
+
+
+	
+

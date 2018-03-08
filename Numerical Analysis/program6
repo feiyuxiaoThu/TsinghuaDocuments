@@ -1,0 +1,30 @@
+clear all;
+clc;
+h=0.2;
+yy=zeros(1,6);
+yyreal=zeros(1,6);
+for i= 1:6
+    x=0.2*(i-1);
+    if i==1
+        y=1;
+    else
+        y=yt;
+    end 
+    k1=fx(x,y);
+    k2=fx(x+0.5*h,y+0.5*h);
+    k3=fx(x+0.5*h,y+0.5*h*k2);
+    k4=fx(x+h,y+h*k3);
+    yt=y+(h*(k1+2*k2+2*k3+k4))/6;
+    yy(1,i)=yt;
+end
+y0=1;
+for j=1:6
+    xx=(j-1)*0.2;
+    ss=fx1(xx,y0);
+    y0=ss;
+    yyreal(1,j)=y0;
+end
+
+    
+
+    

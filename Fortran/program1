@@ -1,0 +1,106 @@
+subroutine mm(c,figx,figy)
+    !DEC$ ATTRIBUTES C, DLLEXPORT::mm
+    !DEC$ ATTRIBUTES  REFERENCE::c,figx,figy
+
+    implicit none
+
+    !迭代次数
+	integer,parameter:: a=5000,b=5000
+    
+    !所求区域的上下界
+	real:: pmin,pmax,qmin,qmax
+
+    !收敛半径
+	real*8:: d=500 
+    !值点的间距
+	real*8:: dx,dy
+
+    !存储颜色值的数组
+	real*8:: c(a+1,b+1)
+
+    !值点数组
+	real*8:: figx(a+1),figy(b+1)
+
+    !迭代变量
+	real*8:: x,y
+    !临时储存的变量
+	real*8:: xx,yy
+
+    !逻辑变量做循环控制
+	logical:: con=.false.
+
+    !颜色变量
+	integer*8 k  
+    !迭代次数的上限
+	integer*8,parameter:: k0=100
+    !半径
+    real*8 r
+
+	!变化的序列
+	real*8:: p,q
+
+	integer*8 i,j
+    
+    
+    !赋初值
+	pmin=-2.3
+	qmin=-1.2
+	pmax=0.9
+	qmax=1.2
+
+	dx=(pmax-pmin)/a
+	dy=(qmax-qmin)/b
+
+	do i=1,a+1
+        
+		figx(i)=pmin+(i-1)*dx
+		figy(i)=qmin+(i-1)*dy
+    
+    end do
+
+	
+
+   !循环迭代
+
+	do i=1,a+1
+        
+		do j=1,b+1
+            
+		p=pmin+(i-1)*dx
+		q=qmin+(j-1)*dy
+        
+        k=0
+        x=0.0
+        y=0.0
+            
+        con=.false.
+        
+			do while(con==.false.)
+                xx=x*x-y*y+p
+				yy=2*x*y+q
+				k=k+1
+                
+                r=xx*xx+yy*yy
+                
+				x=xx
+                y=yy
+
+			
+		
+				if(r>d) then
+			        c(i,j)=k
+                    con=.true.
+                else if(k==k0) then
+                    c(i,j)=0
+                    con=.true.
+                else
+                    cycle
+                end if
+                
+               
+
+			end do
+		end do
+	end do
+
+	end subroutine

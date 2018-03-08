@@ -1,0 +1,47 @@
+n=20;
+x0=-1:2/n:1;
+y0= 1./(1+25*x0.^2);
+x=-1:0.01:1;
+y= 1./(1+25*x.^2);
+figure(1);
+value1=lagrange(x0,y0,x);
+subplot(2,2,2),plot(x,value1,'k-');
+hold on;
+%plot(x,y);
+legend('y1');
+title('lagrange interpolation');
+value2=lineinter(x0,y0,x);
+subplot(2,2,3),plot(x,value2,'M-');
+hold on;
+%plot(x,y);
+legend('y');
+title('linear interpolation')
+value3=spline(x0,y0,x);
+subplot(2,2,4),plot(x,value3,'G-');
+hold on;
+plot(x,y);
+legend('y3','y');
+title('Cubic spline interpolation')
+subplot(2,2,1),plot(x,y);
+
+legend('fx');
+title('the function')
+
+%误差分析
+figure (2);
+subplot(2,2,2),plot(x,value1-y,'b-');
+title ('the error of the lagrange');
+subplot(2,2,3),plot(x,value2-y,'c-');
+title('the error of the linear interpolation');
+subplot(2,2,4),plot(x,value3-y,'y-');
+title('the error of cubic spline interpolation');
+subplot(2,2,1),plot(x,y,'k-');
+title ('the fuinction')
+
+
+
+
+
+
+
+

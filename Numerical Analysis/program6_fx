@@ -1,0 +1,14 @@
+function s = fx( x,y )
+s= 3*y/(1+x);
+
+
+
+end
+
+
+function ss = fx1( x,y )
+ss= 0.5*x^2+x*y;
+
+
+
+end

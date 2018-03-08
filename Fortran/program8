@@ -1,0 +1,78 @@
+subroutine ifs(figx,figy)
+    
+     !DEC$ ATTRIBUTES C, DLLEXPORT::ifs
+  !DEC$ ATTRIBUTES  REFERENCE::figx,figy
+
+	integer,parameter:: pre=20000
+
+	real:: r(pre)
+
+	integer i
+	real(8) w1,w2,w3,w4
+	real(8) ww1,ww2,ww3,ww4
+	real(8) a(2),b(2),c(2),d(2),e(4),f(2)
+	real(8):: p(2)
+	real(8) :: m,n
+
+	real(8):: figx(pre),figy(pre)
+	real(8):: x,y
+	!暂时储存
+	real(8):: xx,yy
+
+
+	w1(m,n)=a(1)*m+b(1)*n+e(1)
+	ww1(m,n)=c(1)*m+d(1)*n+f(1)
+	
+	w2(m,n)=a(2)*m+b(2)*n+e(2)
+	ww2(m,n)=c(2)*m+d(2)*n+f(2)
+
+	
+
+	x=0
+	y=0
+
+
+
+	!赋初值
+	call random_seed()
+	do i=1,pre
+	call random_number(r(i))
+	end do
+
+	
+	
+	p=0.5
+    
+    data a/0.5,0.5/
+    data b/-0.5,0.5/
+    data c/0.5,-0.5/
+    data d/0.5,0.5/
+    data e/0,0.5/
+    data f/0,0.5/
+
+
+
+	do i=1,pre
+		if(r(i)<0.5) then
+		xx=w1(x,y)
+		yy=ww1(x,y)
+		else 
+		xx=w2(x,y)
+		yy=ww2(x,y)
+	
+		end if
+
+		x=xx
+		y=yy
+		figx(i)=xx
+		figy(i)=yy
+		
+	end do
+
+
+
+	end subroutine
+
+
+	
+

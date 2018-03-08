@@ -1,0 +1,45 @@
+%Romberg积分法计算定积分
+clear;clc;close all;
+format long;
+%被积函数为f(x)=sin(2*pi/x)/x^2;
+%积分区间为[1.0,3.0];
+y=zeros(1,10); 
+for m=7:16;
+    j=m-6;
+b=3.0;a=1.0;h=b-a; 
+eps=10^(-m);
+%误差界eps;
+kmax=2000;
+%最大递推次数;
+T1=h/2*(sin(2*pi/a)/a^2+sin(2*pi/b)/b^2);
+S1=0;C1=0;C2=0;R1=0;R2=0;
+for k=1:kmax
+    h=(b-a)/2^k;
+    i=1:2^(k-1);
+    x=a+(2*i-1)*h;
+    fx=sum(sin(2*pi./x)./x.^2);
+    T2=T1/2+fx*h ;
+    S2=T2+(T2-T1)/3;
+    if(k<3)
+        if k==2
+            C2=S2+(S2-S1)/15;
+        end
+    else
+        C2=S2+(S2-S1)/15;
+        R2=C2+(C2-C1)/63;
+        if abs(R2-R1)<eps
+            break;
+        end
+        R1=R2;
+    end
+    T1=T2;S1=S2;C1=C2;
+    
+end
+%fprintf('积分I=%9.8f\n',R2);
+y(1,j)=R2;
+te(1,j)=R2+0.238762414637843;
+end
+
+
+
+

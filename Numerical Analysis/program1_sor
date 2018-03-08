@@ -1,0 +1,58 @@
+clear;clc;
+
+n = input('Hilbert矩阵的阶数n:');
+
+
+    
+H = hilb(n);
+x(1:n) = 1;
+x = x';
+b = H*x;
+
+%Gauss消元法
+x1 = Gauss(H,b);
+disp('Gauss消去法结果x1:');disp(x1);
+y1 = norm(x - x1)/norm(x);
+disp('误差|dx|/|x|:');disp(y1);
+
+%Cholesky分解法
+x2 = Cholesky(H,b);
+disp('Cholesky分解法结果x2:');disp(x2);
+y2 = norm(x - x2)/norm(x);
+disp('误差|dx|/|x|:');disp(y2);
+
+%2-条件数
+cond = cond(H);
+disp('2-条件数:');disp(cond);
+
+%正则化改善结果
+ %根据验算确定
+ a = 6*10^(-13);
+ b1 = H'*b;
+ H1 = a*eye(n) + H'*H;
+ x1 = Gauss(H1,b1);
+ x2 = Cholesky(H1,b1);
+ y1 = norm(x1-x)/norm(x);
+ y2 = norm(x2-x)/norm(x);
+ disp('正则化因子 a=');disp(a);
+ disp('Gauss法 x1=');disp(x1);
+ disp('Gauss法误差');disp(y1);
+ disp('Cholesky法 x2=');disp(x1);
+ disp('Cholesky法误差');disp(y2);
+ 
+ 
+%  %SOR迭代法
+%  w = input('输入SOR法松弛因子w(0-2):');
+%  m = input('输入SOR法迭代次数n:');
+%  x3 = sor(H,b,w,m);
+%  y3 = norm(x3-x)/norm(x);
+%  disp('SOR法结果x3 = ');disp(x3);
+%  disp('SOR法误差:');disp(y3);
+ 
+ %共轭梯度法(CG算法)
+ x4 = CG(H,b);
+ y4 = norm(x4 - x)/norm(x);
+ disp('CG法结果x4 = ');disp(x4);
+ disp('CG法误差:');disp(y4);
+ 
+ 

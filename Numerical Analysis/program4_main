@@ -1,0 +1,17 @@
+clc;
+clear all;
+x=-1:0.01:1;
+y0=0.55423*x.^3+0.57297*x.^2-0.01222*x-0.01250;
+y1=log(x+2);
+yy=y1.*x.^2;
+figure (1);
+plot(x,y0,'g');
+hold on;
+plot(x,yy,'b');
+title('权函数为1的最佳平方逼近三次多项式');
+legend('the original function','the approching function');
+figure (2);
+plot(x,(y0-yy));
+title('the error');
+
+
